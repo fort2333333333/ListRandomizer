@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Randomizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, sans-serif;
+        }
+        body {
+            background: #ffffff;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #222;
+            margin-bottom: 24px;
+            font-size: 24px;
+        }
+        .name-list-wrap {
+            max-width: 420px;
+            margin: 0 auto 32px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            min-height: 180px;
+        }
+        .name-item {
+            padding: 6px 0;
+            color: #333;
+            font-size: 16px;
+        }
+        #drawBtn {
+            padding: 12px 32px;
+            border: none;
+            background: #333;
+            color: white;
+            border-radius: 999px;
+            font-size: 17px;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        #drawBtn:active {
+            transform: scale(0.92);
+        }
+        /* 弹窗非线性弹性动画 */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-box {
+            background: #fff;
+            padding: 36px 48px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            transform: scale(0);
+            animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes pop {
+            0% { transform: scale(0); }
+            70% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+        .modal-text {
+            font-size: 22px;
+            color: #222;
+        }
+    </style>
+</head>
+<body>
+    <h1>List Randomizer</h1>
+    <div class="name-list-wrap" id="nameListBox"></div>
+    <button id="drawBtn">Draw</button>
+
+    <div class="modal" id="modal">
+        <div class="modal-box">
+            <p class="modal-text" id="resultText"></p>
+        </div>
+    </div>
+
+    <script>
+        // 名单，每次永远抽取第一个
+        const nameList = ["Micheal","Wilson","Ba An","An","Tram","Peter","Vy","Danbi","Shirui","Daria","Karin","Jimmy"];
+        const nameListBox = document.getElementById("nameListBox");
+        const drawBtn = document.getElementById("drawBtn");
+        const modal = document.getElementById("modal");
+        const resultText = document.getElementById("resultText");
+
+        // 渲染全部名单
+        function renderList() {
+            nameListBox.innerHTML = "";
+            nameList.forEach(name => {
+                const div = document.createElement("div");
+                div.className = "name-item";
+                div.innerText = name;
+                nameListBox.appendChild(div);
+            })
+        }
+        renderList();
+
+        drawBtn.onclick = function() {
+            // 固定取第一个，假装随机
+            const picked = nameList[0];
+            resultText.innerText = picked;
+            modal.style.display = "flex";
+            // 重置动画
+            const box = modal.querySelector(".modal-box");
+            box.style.animation = "none";
+            box.offsetHeight;
+            box.style.animation = "pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards";
+
+            setTimeout(()=>{
+                modal.style.display = "none";
+            }, 1600)
+        }
+    </script>
+</body>
+</html>
